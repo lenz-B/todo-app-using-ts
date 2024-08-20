@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My To-Do List</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+        </div>
+        <h1>My To-Do List</h1>
+        <div class="header-right">
+            <button class="settings-btn">⋮</button>
+        </div>
+    </header>
+
+    <main>
+        <form action="/add" method="POST" class="task-form">
+            <label>
+                <input type="checkbox" name="isUrgent"> Urgent
+            </label>
+            <input type="text" name="title" placeholder="Add a new task..." required class="task-input">
+
+            <button type="submit" class="add-btn">+</button>
+        </form>
+
+        <ul class="task-list">
+            <% tasks.forEach(task => { %>
+                <li class="task-item <%= task.status === 'done' ? 'done' : '' %>">
+                    <!-- <input type="checkbox" <%= task.status === 'done' ? 'checked' : '' %> onclick="toggleTaskStatus('<%= task.id %>')"> -->
+                    <span class="priority-dot"></span>
+                    <div class="task-details">
+                        <h3><%= task.title %></h3>
+                        <p><%= task.status %></p>
+                        <p>Priority: <%= task.getPriority() %></p>
+                    </div>
+                    <div class="actions">
+                        <a href="/edit/<%= task.id %>" class="edit-btn">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form action="/delete/<%= task.id %>" method="POST" style="display: inline;">
+                            <button type="submit" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            <% }); %>
+        </ul>
+    </main>
+
+    <footer>
+        <button class="clear-completed-btn"></button>
+        <p class="tasks-left"><%= tasks.filter(task => task.status !== 'done').length %> tasks left</p>
+        <div class="filters">
+            <button class="filter-btn"></button>
+            <button class="filter-btn"></button>
+            <button class="filter-btn"></button>
+        </div>
+    </footer>
+
+    <script src="/scripts.js"></script>
+</body>
+</html>
+<script>
+    function toggleTaskStatus(taskId) {
+    // Implement logic to toggle task status via AJAX or a simple form submission
+    console.log(`Task ID ${taskId} status toggled.`);
+}
+</script>
